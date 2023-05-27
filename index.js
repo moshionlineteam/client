@@ -179,10 +179,6 @@ const zoomFactor = Math.max(mainWindow.webContents.getZoomFactor() - 0.1, 0.1);
       mainWindow.webContents.setZoomLevel(0);
     })
 
-      globalShortcut.register('CommandOrControl+Shift+I', () => {
-        mainWindow.webContents.openDevTools();
-      });
-
     globalShortcut.register('CommandOrControl+M', () => {
       mainWindow.webContents.setAudioMuted(true);
     });
