@@ -22,7 +22,7 @@
   "author": "Moshi Online Team",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^10.4.7",
+    "electron": "^11.1.1",
     "electron-builder": "^22.9.1",
     "electron-packager": "^15.4.0"
   },
