@@ -10,6 +10,7 @@ const path = require('path');
 const UserAgent = require('user-agents');
 const userAgent = new UserAgent();
 const DiscordRPC = require('discord-rpc');
+const { autoUpdater } = require("electron-updater")
 const url = `https://moshionline.net`;
 const clientId = '1111839940599349259';
 
@@ -48,12 +49,9 @@ switch (process.platform) {
 
 app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, pluginName));
 app.commandLine.appendSwitch("disable-http-cache");
+app.commandLine.appendSwitch("ignore-certificate-errors");
 
 let mainWindow;
-
-function clearCache() {
-  mainWindow.webContents.session.clearCache();
-}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -65,15 +63,10 @@ function createWindow() {
     title: "Launching Moshi Online Client...",
     icon: __dirname + '/favicon.ico',
     webPreferences: {
-      plugins: true,
-      nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: false,
-      backgroundThrottling: false
+      plugins: true
     }
   });
 
-  // Create a custom menu
   const menuTemplate = [
     {
       label: 'View',
@@ -125,7 +118,8 @@ function createWindow() {
       {
         label: 'Clear Cache',
         click: () => {
-          clearCache().then(() => {
+          const alert = new Alert();
+          mainWindow.webContents.session.clearCache().then(() => {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: 'Cache Cleared',
@@ -160,13 +154,10 @@ function createWindow() {
   mainWindow.webContents.setUserAgent(userAgent.toString(), "; Moshi Online Client v1.5");
 
   mainWindow.setMenu(null);
-
-  clearCache();
   mainWindow.loadURL(url);
   
- // Timeout if the URL never loads.
-  const timeoutId = setTimeout(() => {
- const response = dialog.showMessageBoxSync(mainWindow, {
+const timeoutId = setTimeout(() => {
+const response = dialog.showMessageBoxSync(mainWindow, {
     type: 'error',
     title: 'Timeout',
     message: 'The app took too long to load. Check your internet connection, then reopen the application',
@@ -210,7 +201,7 @@ mainWindow.webContents.on('did-finish-load', () => {
       largeImageKey: `logo2`,
       buttons: [{
           "label": "Play now!",
-          "url": "https://moshionline.net"
+          "url": url
       },
         {
             "label": "Join our Discord!",
@@ -218,10 +209,9 @@ mainWindow.webContents.on('did-finish-load', () => {
         }]
       })
     })
-    }
+  }
 
   const startTimestamp = new Date();
-
 
   rpc.on('ready', () => {
     userStatus();
@@ -233,11 +223,26 @@ mainWindow.webContents.on('did-finish-load', () => {
     clientId
     });
 
+  mainWindow.webContents.session.webRequest.onCompleted({ urls: ['*://moshionline.net/*'] }, (details) => {
+    if (details.statusCode === 500) {
+      const { url } = details;
+      dialog.showMessageBox({
+        type: 'error',
+        title: 'Moshi Online Error',
+        detail: 'Please screenshot this and contact a developer.',
+        message: `Error: '${url}'`,
+        buttons: ['OK'],
+      });
+    }
+  });
+  
     mainWindow.on('closed', function () {
       mainWindow = null;
       globalShortcut.unregisterAll();
   
     });
+
+    mainWindow.webContents.session.clearHostResolverCache();
   
     mainWindow.on('blur', () => {
       globalShortcut.unregisterAll();
@@ -283,33 +288,32 @@ if (!gotTheLock) {
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
-
-      setInterval(clearCache, 1 * 60 * 60);
     }
   });
 }
 
-
 function registerGlobalKeyBinds() {
-globalShortcut.register('CommandOrControl+=', () => {
-const zoomFactor = Math.min(mainWindow.webContents.getZoomFactor() + 0.1, 2.0);
-  mainWindow.webContents.setZoomFactor(zoomFactor)
-})
-globalShortcut.register('CommandOrControl+-', () => {
-const zoomFactor = Math.max(mainWindow.webContents.getZoomFactor() - 0.1, 0.1);
-  mainWindow.webContents.setZoomFactor(zoomFactor)
-})
-globalShortcut.register('CommandOrControl+0', () => {
-  mainWindow.webContents.setZoomLevel(0);
-})
-globalShortcut.register('CommandOrControl+M', () => {
-  mainWindow.webContents.setAudioMuted(true);
-});
-globalShortcut.register('CommandOrControl+Shift+M', () => {
-  mainWindow.webContents.setAudioMuted(false);
-});
-
-globalShortcut.register('CommandOrControl+R', () => {
-mainWindow.reload();
-});
+  globalShortcut.register('CommandOrControl+=', () => {
+    const zoomFactor = Math.min(mainWindow.webContents.getZoomFactor() + 0.1, 2.0);
+    mainWindow.webContents.setZoomFactor(zoomFactor)
+  })
+  globalShortcut.register('CommandOrControl+-', () => {
+    const zoomFactor = Math.max(mainWindow.webContents.getZoomFactor() - 0.1, 0.1);
+    mainWindow.webContents.setZoomFactor(zoomFactor)
+  })
+  globalShortcut.register('CommandOrControl+0', () => {
+    mainWindow.webContents.setZoomLevel(0);
+  })
+  globalShortcut.register('CommandOrControl+M', () => {
+    mainWindow.webContents.setAudioMuted(true);
+  });
+  globalShortcut.register('CommandOrControl+Shift+M', () => {
+    mainWindow.webContents.setAudioMuted(false);
+  });
+  globalShortcut.register('CommandOrControl+Shift+I', () => {
+    mainWindow.webContents.openDevTools();
+  });
+  globalShortcut.register('CommandOrControl+R', () => {
+    mainWindow.reload();
+  });
 }
