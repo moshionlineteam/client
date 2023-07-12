@@ -10,7 +10,6 @@ const path = require('path');
 const UserAgent = require('user-agents');
 const userAgent = new UserAgent();
 const DiscordRPC = require('discord-rpc');
-const { autoUpdater } = require("electron-updater")
 const url = `https://moshionline.net`;
 const clientId = '1111839940599349259';
 
