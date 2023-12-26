@@ -7,8 +7,6 @@ const {
   session
 } = require('electron');
 const path = require('path');
-const UserAgent = require('user-agents');
-const userAgent = new UserAgent();
 const DiscordRPC = require('discord-rpc');
 const url = `https://moshionline.net`;
 const clientId = '1111839940599349259';
@@ -149,28 +147,15 @@ function createWindow() {
     menu.popup(mainWindow, props.x, props.y);
   });
 
-  mainWindow.webContents.setUserAgent(userAgent.toString(), "; Moshi Online Client v1.5");
+  mainWindow.webContents.setUserAgent"Moshi Online Client v2.0");
 
   mainWindow.setMenu(null);
   mainWindow.loadURL(url);
   
-const timeoutId = setTimeout(() => {
-const response = dialog.showMessageBoxSync(mainWindow, {
-    type: 'error',
-    title: 'Timeout',
-    message: 'The app took too long to load. Check your internet connection, then reopen the application',
-    buttons: ['Close'],
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    registerGlobalKeyBinds();
   });
-
-  if (response === 0) {
-    app.quit();
-  }
-}, 10000);
-
-mainWindow.webContents.on('did-finish-load', () => {
-  clearTimeout(timeoutId);
-  registerGlobalKeyBinds();
-});
 
   DiscordRPC.register(clientId);
   const rpc = new DiscordRPC.Client({
@@ -200,11 +185,7 @@ mainWindow.webContents.on('did-finish-load', () => {
       buttons: [{
           "label": "Play now!",
           "url": url
-      },
-        {
-            "label": "Join our Discord!",
-            "url": "https://discord.moshionline.net"
-        }]
+      }]
       })
     })
   }
