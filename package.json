@@ -1,6 +1,6 @@
 {
   "name": "moshi-online-client",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Desktop client for moshionline.net",
   "main": "main.js",
   "scripts": {
@@ -29,8 +29,7 @@
   "dependencies": {
     "discord-rpc": "^4.0.1",
     "electron-squirrel-startup": "^1.0.0",
-    "get-proxy-settings": "^0.1.12",
-    "user-agents": "^1.0.1342"
+    "get-proxy-settings": "^0.1.12"
   },
   "build": {
     "appId": "com.moshi-online.desktop",
