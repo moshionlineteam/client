@@ -7,12 +7,12 @@
     "start": "electron .",
     "publish": "electron-builder --win -p always",
     "build": "electron-builder --win",
-    "build1": "electron-packager . MoshiOnline --platform=darwin --overwrite --icon=icon.icns",
-    "build2": "electron-packager . MoshiOnline --platform=win32 --overwrite --icon=icon.ico",
-    "build3": "electron-packager . MoshiOnline --platform=linux --overwrite --icon=icon.ico",
-    "build4": "electron-packager . MoshiOnline --all --overwrite --icon=icon.ico",
-    "buildWin32": "electron-packager . MoshiOnline --platform=win32 --arch=ia32 --overwrite --icon=icon.ico --production --prune -p always",
-    "buildWin64": "electron-packager . MoshiOnline --platform=win32 --overwrite --icon=icon.ico -p always --prune-license nm-prune --force"
+    "build1": "electron-packager . moshi-online-client --platform=darwin --overwrite --icon=icon.icns",
+    "build2": "electron-packager . moshi-online-client --platform=win32 --overwrite --icon=icon.ico",
+    "build3": "electron-packager . moshi-online-client --platform=linux --overwrite --icon=icon.ico",
+    "build4": "electron-packager . moshi-online-client --all --overwrite --icon=icon.ico",
+    "buildWin32": "electron-packager . moshi-online-client --platform=win32 --arch=ia32 --overwrite --icon=icon.ico --production --prune -p always",
+    "buildWin64": "electron-packager . moshi-online-client --platform=win32 --overwrite --icon=icon.ico -p always --prune-license nm-prune --force"
   },
   "bugs": {
     "url": "https://github.com/moshionlineteam"
@@ -27,7 +27,9 @@
     "electron-packager": "^15.4.0"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "discord-rpc": "^4.0.1",
+    "electron-installer-debian": "^3.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "get-proxy-settings": "^0.1.12"
   },
