@@ -147,7 +147,7 @@ function createWindow() {
     menu.popup(mainWindow, props.x, props.y);
   });
 
-  mainWindow.webContents.setUserAgent"Moshi Online Client v2.0");
+  mainWindow.webContents.setUserAgent("Moshi Online Client v2.0");
 
   mainWindow.setMenu(null);
   mainWindow.loadURL(url);
