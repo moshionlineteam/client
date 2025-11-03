@@ -4,7 +4,7 @@
   "description": "Desktop client for moshionline.net",
   "main": "main.js",
     "engines": {
-    "node": ">=16.0.0 <19"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "start": "electron-forge start",
@@ -60,6 +60,12 @@
   "repository": "https://github.com/moshionlineteam/client",
   "author": "Moshi Online Team",
   "license": "CC0-1.0",
+  "dependencies": {
+    "axios": "^1.13.1",
+    "discord-rpc": "^4.0.1",
+    "electron-forge": "^5.2.4",
+    "electron-squirrel-startup": "^1.0.0"
+  },
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
     "@electron-forge/maker-appx": "^6.0.0-beta.54",
@@ -71,14 +77,6 @@
     "@electron-forge/maker-zip": "^6.4.2",
     "@electron-forge/publisher-github": "^6.0.0-beta.54",
     "electron": "^11.5.0"
-  },
-  "dependencies": {
-    "-": "^0.0.1",
-    "axios": "^1.13.1",
-    "discord-rpc": "^4.0.1",
-    "electron-forge": "^5.2.4",
-    "electron-squirrel-startup": "^1.0.0",
-    "get-proxy-settings": "^0.1.12"
   },
   "build": {
     "appId": "com.moshi-online.desktop",
