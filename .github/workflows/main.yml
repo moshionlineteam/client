@@ -37,22 +37,22 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
         
       - name: Install dependencies
-        run: yarn
+        run: npm i
       
       - name: Make and Publish (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
-        run: yarn run publish
+        run: npm run publish
         env:
           GITHUB_TOKEN: ${{ secrets.BUILD_TOKEN }}
 
       - name: Make and Publish (WINDOWS)
         if: startsWith(matrix.os, 'windows')
-        run: yarn run publish-windows
+        run: npm run publish-windows
         env:
           GITHUB_TOKEN: ${{ secrets.BUILD_TOKEN }}
         
       - name: Make and Publish (MAC)
         if: startsWith(matrix.os, 'macos')
-        run: yarn run publish-mac
+        run: npm run publish-mac
         env:
           GITHUB_TOKEN: ${{ secrets.BUILD_TOKEN }}
