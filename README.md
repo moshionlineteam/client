@@ -1,3 +1,7 @@
+# Moshi Online Desktop
+
+[![Build status](https://github.com/moshionlineteam/client/actions/workflows/main.yml/badge.svg)](https://github.com/moshionlineteam/client/actions/workflows/main.yml)
+
 <p align="center"><a href="https://moshionline.net"><img src="https://i.imgur.com/xqm67Ei.png" width="50%" height="50%"></a></p>
 
 ## Introduction
