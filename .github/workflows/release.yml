@@ -1,4 +1,4 @@
-name: MoshiOnlineDesktop
+name: MoshiOnlineDesktop-Release
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     # The type of runner that the job will run on
-    name: Build MoshiOnlineDesktop
+    name: Build MoshiOnlineDesktop-Release
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -37,7 +37,6 @@ jobs:
       - name: Generate Release Version
         id: release_version
         run: |
-          DATE=$(date +'%y%m%d-%H%M')
           SHA=$(echo $GITHUB_SHA | cut -c1-7)
           RELEASE_VERSION="${PROJECT_VERSION}-${SHA}"
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
