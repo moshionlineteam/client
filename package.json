@@ -1,18 +1,57 @@
 {
   "name": "moshi-online-client",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Desktop client for moshionline.net",
   "main": "main.js",
+    "engines": {
+    "node": ">=16.0.0 <19"
+  },
   "scripts": {
-    "start": "electron .",
-    "publish": "electron-builder --win -p always",
-    "build": "electron-builder --win",
-    "build1": "electron-packager . moshi-online-client --platform=darwin --overwrite --icon=icon.icns",
-    "build2": "electron-packager . moshi-online-client --platform=win32 --overwrite --icon=icon.ico",
-    "build3": "electron-packager . moshi-online-client --platform=linux --overwrite --icon=icon.ico",
-    "build4": "electron-packager . moshi-online-client --all --overwrite --icon=icon.ico",
-    "buildWin32": "electron-packager . moshi-online-client --platform=win32 --arch=ia32 --overwrite --icon=icon.ico --production --prune -p always",
-    "buildWin64": "electron-packager . moshi-online-client --platform=win32 --overwrite --icon=icon.ico -p always --prune-license nm-prune --force"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "publish-windows": "electron-forge publish",
+    "publish-mac": "electron-forge publish --arch=x64",
+    "publish-git": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "icon.icns"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "moshionline",
+            "authors": "Moshi Online Team",
+            "setupIcon": "./icon.ico"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "format": "ULFO"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   },
   "bugs": {
     "url": "https://github.com/moshionlineteam"
@@ -22,24 +61,36 @@
   "author": "Moshi Online Team",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^11.1.1",
-    "electron-builder": "^22.9.1",
-    "electron-packager": "^15.4.0"
+    "@electron-forge/cli": "^6.4.2",
+    "@electron-forge/maker-appx": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.4.2",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.54",
+    "@electron-forge/maker-flatpak": "^6.0.0-beta.64",
+    "@electron-forge/maker-rpm": "^6.4.2",
+    "@electron-forge/maker-squirrel": "^6.4.2",
+    "@electron-forge/maker-zip": "^6.4.2",
+    "@electron-forge/publisher-github": "^6.0.0-beta.54",
+    "electron": "^11.5.0"
   },
   "dependencies": {
     "-": "^0.0.1",
     "axios": "^1.13.1",
+    "bcrypt": "^6.0.0",
     "discord-rpc": "^4.0.1",
-    "electron-installer-debian": "^3.2.0",
+    "electron-forge": "^5.2.4",
     "electron-squirrel-startup": "^1.0.0",
     "get-proxy-settings": "^0.1.12"
   },
   "build": {
     "appId": "com.moshi-online.desktop",
+    "mac": {
+      "icon": "./icon.icns",
+      "category": "lib.games.moshionline"
+    },
     "productName": "Moshi Online Desktop",
     "asar": "false",
     "win": {
-      "publish": "github"
+      "icon": "./icon.png"
     }
   }
 }
