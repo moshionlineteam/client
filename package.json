@@ -79,6 +79,12 @@
     "electron": "^11.5.0"
   },
   "build": {
+      "publish": [
+    {
+      "provider": "github",
+      "releaseType": "draft"
+    }
+  ],
     "appId": "com.moshi-online.desktop",
     "mac": {
       "icon": "./icon.icns",
