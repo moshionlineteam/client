@@ -78,22 +78,42 @@
     "@electron-forge/publisher-github": "^6.0.0-beta.54",
     "electron": "^11.5.0"
   },
-  "build": {
-      "publish": [
+"build": {
+  "publish": [
     {
       "provider": "github",
       "releaseType": "draft"
     }
   ],
-    "appId": "com.moshi-online.desktop",
-    "mac": {
-      "icon": "./icon.icns",
-      "category": "lib.games.moshionline"
-    },
-    "productName": "Moshi Online Desktop",
-    "asar": "false",
-    "win": {
-      "icon": "./icon.png"
-    }
+  "appId": "com.moshi-online.desktop",
+  "productName": "Moshi Online Desktop",
+  "asar": false,
+  "mac": {
+    "icon": "./icon.icns",
+    "category": "public.app-category.games",
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  },
+
+  "win": {
+    "icon": "./icon.png",
+    "target": [
+      "nsis",
+      "exe"
+    ]
+  },
+
+  "linux": {
+    "icon": "./icon.png",
+    "category": "Game",
+    "target": [
+      "deb",
+      "rpm",
+      "AppImage"
+    ]
   }
+}
+
 }
