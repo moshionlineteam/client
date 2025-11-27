@@ -88,24 +88,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Upload installers only
+      - name: Create release_files folder
+        run: mkdir -p release_files
+
+      - name: Copy installers into release_files
+        run: |
+          cp -r out/**/*.exe        release_files/ 2>/dev/null || true
+          cp -r out/**/*.dmg        release_files/ 2>/dev/null || true
+          cp -r out/**/*.AppImage   release_files/ 2>/dev/null || true
+          cp -r out/**/*.deb        release_files/ 2>/dev/null || true
+          cp -r out/**/*.rpm        release_files/ 2>/dev/null || true
+          cp -r out/**/*.zip        release_files/ 2>/dev/null || true
+          cp -r out/**/*.pkg        release_files/ 2>/dev/null || true
+
+      - name: Upload installers as workflow artifacts
         uses: actions/upload-artifact@v4
         with:
           name: "${{ matrix.os }}-installers"
-          path: |
-            out/**/*.exe
-            out/**/*.dmg
-            out/**/*.AppImage
-            out/**/*.deb
-            out/**/*.rpm
-            out/**/*.zip
-            out/**/*.pkg
-
+          path: release_files/*
 
       - name: Upload assets to release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ needs.tag.outputs.version }}
-          artifacts: "release_files/**"
+          artifacts: "release_files/*"
           allowUpdates: true
-          draft: false
+          draft: true
