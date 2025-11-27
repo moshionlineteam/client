@@ -27,13 +27,23 @@ jobs:
           TAG="v$VERSION"
           echo "version=$TAG" >> $GITHUB_OUTPUT
 
-      - name: Create Git tag
+      - name: Create release tag
         run: |
           git tag ${{ steps.version.outputs.version }} || echo "Tag already exists"
           git push origin ${{ steps.version.outputs.version }} || echo "Tag exists, skipping"
 
+      - name: Create GitHub Release (empty)
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version.outputs.version }}
+          name: "Release ${{ steps.version.outputs.version }}"
+          draft: false
+          prerelease: false
+          allowUpdates: true
+
+
   build:
-    name: Build Release
+    name: Build Release Artifacts
     needs: tag
     runs-on: ${{ matrix.os }}
 
@@ -63,10 +73,30 @@ jobs:
       - name: Install dependencies
         run: npm ci --force
 
-      - name: Build & Publish (electron-builder)
-        run: npm run publish
-        env:
-          GH_TOKEN: ${{ secrets.BUILD_TOKEN }}
-          # Optional: use tag name from job 1
-          BUILD_VERSION: ${{ needs.tag.outputs.version }}
+      - name: Build (electron forge)
+        run: npm run make
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ matrix.os }}-artifacts"
+          path: out/**/*
+
+  upload:
+    name: Upload Files to GitHub Release
+    needs: [tag, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release_files
+
+      - name: Upload assets to release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.tag.outputs.version }}
+          artifacts: "release_files/**"
+          allowUpdates: true
+          draft: false
