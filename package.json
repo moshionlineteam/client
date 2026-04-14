@@ -10,6 +10,12 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "make:macos-x64": "electron-forge make --platform=darwin --arch=x64",
+    "make:macos-arm64": "electron-forge make --platform=darwin --arch=arm64",
+    "make:win32-x64": "electron-forge make --platform=win32 --arch=x64",
+    "make:win32-ia32": "electron-forge make --platform=win32 --arch=ia32",
+    "make:linux-x64": "electron-forge make --platform=linux --arch=x64",
+    "make:linux-ia32": "electron-forge make --platform=linux --arch=ia32",
     "publish": "electron-forge publish",
     "publish-windows": "electron-forge publish",
     "publish-mac": "electron-forge publish --arch=x64",
@@ -19,7 +25,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "icon.icns"
+        "icon": "./icon"
       },
       "makers": [
         {
