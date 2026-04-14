@@ -26,22 +26,7 @@ jobs:
           VERSION=$(jq -r ".version" package.json)
           TAG="v$VERSION"
           echo "version=$TAG" >> $GITHUB_OUTPUT
-
-      - name: Create release tag
-        run: |
-          git tag ${{ steps.version.outputs.version }} || echo "Tag already exists"
-          git push origin ${{ steps.version.outputs.version }} || echo "Tag exists, skipping"
-
-      - name: Create GitHub Release (empty)
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.version.outputs.version }}
-          name: "Release ${{ steps.version.outputs.version }}"
-          draft: false
-          prerelease: false
-          allowUpdates: true
-
-
+          
   build:
     name: Build Release Artifacts
     needs: tag
